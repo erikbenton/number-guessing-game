@@ -1,32 +1,71 @@
 var document = document.querySelector("html");
 var inputNumber = document.querySelector("input[type='number']");
 var submit = document.querySelector("input[type='submit']");
+var instructions = document.querySelector(".instructions");
+var guesses = document.querySelector(".guesses");
 
-var randomNumber = Math.floor(Math.random() * 100);
+var randomNumber;// = Math.floor(Math.random() * 100);
 var guessedNumber;
+var numOfGuesses;
 
-console.log(randomNumber);
 
-submit.addEventListener("click", function(e)
+
+initialize();
+
+function initialize()
 {
 
-	guessedNumber = inputNumber.value;
+	//Setting up initial conditions
+	reset();
 
-	if(guessedNumber < randomNumber)
+	//Adding event listeners
+	submit.addEventListener("click", function(e)
 	{
-		alert("Too low, guess again");
-		inputNumber.value = "";
-	}
-	else if(guessedNumber > randomNumber)
-	{
-		alert("Too high, guess again");
-		inputNumber.value = "";
-	}
-	else
-	{
-		alert("You guessed right!");
-	}
 
-	e.preventDefault();
+		guessedNumber = inputNumber.value;
 
-});
+		if(guessedNumber < randomNumber)
+		{
+			alert("Too low, guess again");
+			addInputToGuesses()
+			numOfGuesses++;
+			clearInput();
+		}
+		else if(guessedNumber > randomNumber)
+		{
+			alert("Too high, guess again");
+			addInputToGuesses();
+			numOfGuesses++;
+			clearInput();
+		}
+		else
+		{
+			alert("You guessed right!");
+			reset();
+		}
+
+		e.preventDefault();
+
+	});
+}
+
+function reset()
+{
+	randomNumber = Math.floor(Math.random() * 100);
+	numOfGuesses = 0;
+	guesses.innerHTML = "";
+	clearInput();
+
+	console.log(randomNumber);
+}
+
+function addInputToGuesses()
+{
+	guesses.innerHTML += " " + inputNumber.value;
+}
+
+function clearInput()
+{
+	inputNumber.value = "";
+}
+
